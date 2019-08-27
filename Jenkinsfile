@@ -19,31 +19,22 @@ pipeline {
       }
     }
     stage('Push result image') {
-      when {
-        branch 'master'
-      }
       steps {
-        withDockerRegistry([credentialsId: 'dockerbuildbot-index.docker.io', url: 'https://index.docker.io/v1/']) {
+        docker.withRegistry('https://index.docker.io/v1/', 'dockerbuildbot-index.docker.io') {
           sh 'docker push dockersamples/result'
         }
       }
     }
     stage('Push vote image') {
-      when {
-        branch 'master'
-      }
       steps {
-        withDockerRegistry([credentialsId: 'dockerbuildbot-index.docker.io', url: 'https://index.docker.io/v1/']) {
+        docker.withRegistry('https://index.docker.io/v1/', 'dockerbuildbot-index.docker.io') {
           sh 'docker push dockersamples/vote'
         }
       }
     }
     stage('Push worker image') {
-      when {
-        branch 'master'
-      }
       steps {
-        withDockerRegistry([credentialsId: 'dockerbuildbot-index.docker.io', url: 'https://index.docker.io/v1/']) {
+        docker.withRegistry('https://index.docker.io/v1/', 'dockerbuildbot-index.docker.io') {
           sh 'docker push dockersamples/worker'
         }
       }

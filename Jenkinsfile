@@ -1,15 +1,13 @@
 pipeline {
   agent {
-    node {
-      label 'ubuntu-1604-aufs-stable'
-    }
+    label 'ubuntu-1804 && amd64 && overlay2'
   }
   stages {
     stage('Build result') {
       steps {
         sh 'docker build -t dockersamples/result ./result'
       }
-    } 
+    }
     stage('Build vote') {
       steps {
         sh 'docker build -t dockersamples/vote ./vote'
@@ -25,7 +23,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        withDockerRegistry(credentialsId: 'dockerbuildbot-index.docker.io', url:'') {
+        withDockerRegistry([credentialsId: 'dockerbuildbot-index.docker.io', url: 'https://index.docker.io/v1/']) {
           sh 'docker push dockersamples/result'
         }
       }
@@ -35,7 +33,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        withDockerRegistry(credentialsId: 'dockerbuildbot-index.docker.io', url:'') {
+        withDockerRegistry([credentialsId: 'dockerbuildbot-index.docker.io', url: 'https://index.docker.io/v1/']) {
           sh 'docker push dockersamples/vote'
         }
       }
@@ -45,7 +43,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        withDockerRegistry(credentialsId: 'dockerbuildbot-index.docker.io', url:'') {
+        withDockerRegistry([credentialsId: 'dockerbuildbot-index.docker.io', url: 'https://index.docker.io/v1/']) {
           sh 'docker push dockersamples/worker'
         }
       }
